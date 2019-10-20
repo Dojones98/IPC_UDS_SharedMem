@@ -54,25 +54,32 @@ void child(std::string keyword, int p[2]) {
   printf("%lld", size);
   
   std::cout << "size of master vec: " << master_vec.size() << std::endl; 
-   for (int i = 0; i < master_vec.size(); ++i) {
-     std::cout << master_vec.at(i);
-   }
 
-  
-    
-  
-    
-  
-  
-  
   std::vector<std::string> v1;
   std::vector<std::string> v2;
   std::vector<std::string> v3;
   std::vector<std::string> v4;
 
+   for (int i = 0; i < master_vec.size(); ++i) {
+     if(i < (master_vec.size()/4) ) {
+        v1.push_back(master_vec.at(i));
+     } else if ((i >= (master_vec.size()/4)) && (i < master_vec.size()/2)) {
+        v2.push_back(master_vec.at(i));
+     } else if ((i >= master_vec.size()/2) && (i < 3*(master_vec.size()/4))) {
+        v3.push_back(master_vec.at(i));
+     }else {
+        v4.push_back(master_vec.at(i));
+     }
+   }
 
 
+   long long int total_size = v1.size()+ v2.size()+ v3.size() + v4.size();
+
+   std::cout << "Total size of vectors: " << total_size << std::endl;
 }
+
+
+
 
 
 
