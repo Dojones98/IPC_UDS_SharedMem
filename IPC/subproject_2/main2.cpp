@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <sys/stat.h>
+#include <pthread.h>
 
 
 using std::string;
@@ -42,15 +43,17 @@ struct thread_args Struct_thread_4;
 
 
 
-void  thread_function(std::vector<std::string> &work_done) {
+void thread_function(std::vector<std::string> &work_done) {
+    //std::vector<std::string>* work_done = static_cast<std::vector<std::string>*>(args);
     std::string keyword = work_done.back(); work_done.pop_back();
     std::regex r("[^A-Za-z]" + keyword + "[^A-Za-z]");
     std::smatch m;
+    std::vector<std::string> result;
     for (int i = 0; i < work_done.size(); ++i) {
-      if(!(std::regex_search(work_done.at(i),m,r)))
-          work_done.erase(work_done.begin() + (i-1));
-          i--;
+      if(std::regex_search(work_done.at(i),m,r)) 
+          result.push_back(work_done.at(i));
     }
+    work_done = result;
 }
 
 void child(std::string keyword, int p[2]) {
@@ -93,25 +96,27 @@ void child(std::string keyword, int p[2]) {
         v4.push_back(master_vec.at(i));
      }
    }
+
+   std::cout << "\n Size of cat-ed vector is: " << v1.size() << std::endl;
    v1.push_back(keyword); v2.push_back(keyword); v3.push_back(keyword); v4.push_back(keyword);
 
-  pthread_t t1, t2, t3, t4;
 
-  std::thread thread1 (thread_function, &v1);
-  
+  std::thread thread1 (thread_function, std::ref(v1));
+  std::thread thread2 (thread_function, std::ref(v2));
+  std::thread thread3 (thread_function, std::ref(v3));
+  std::thread thread4 (thread_function, std::ref(v4));
 
-   
+  thread1.join(); thread2.join(); thread3.join(); thread4.join();
 
+  std::cout << "\n Size of pre cat vector is: " << v1.size() << std::endl;
 
+  std::move(v2.begin(), v2.end(), std::back_inserter(v1));
+  std::move(v3.begin(), v3.end(), std::back_inserter(v1));
+  std::move(v4.begin(), v4.end(), std::back_inserter(v1));
 
+  std::cout << "\n Size of cat-ed vector is: " << v1.size() << std::endl;
    
 }
-
-
-
-
-
-
 
 
 void parent(std::string file, int p[2]) {
