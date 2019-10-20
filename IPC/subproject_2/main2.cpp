@@ -31,6 +31,28 @@ using std::string;
 
 #define MSGSIZE 4
 
+struct thread_args {
+  std::vector<std::string> lines;
+  std::string key;
+};
+struct thread_args Struct_thread_1;
+struct thread_args Struct_thread_2;
+struct thread_args Struct_thread_3;
+struct thread_args Struct_thread_4;
+
+
+
+void  thread_function(std::vector<std::string> &work_done) {
+    std::string keyword = work_done.back(); work_done.pop_back();
+    std::regex r("[^A-Za-z]" + keyword + "[^A-Za-z]");
+    std::smatch m;
+    for (int i = 0; i < work_done.size(); ++i) {
+      if(!(std::regex_search(work_done.at(i),m,r)))
+          work_done.erase(work_done.begin() + (i-1));
+          i--;
+    }
+}
+
 void child(std::string keyword, int p[2]) {
 
   long long int size;
@@ -71,11 +93,18 @@ void child(std::string keyword, int p[2]) {
         v4.push_back(master_vec.at(i));
      }
    }
+   v1.push_back(keyword); v2.push_back(keyword); v3.push_back(keyword); v4.push_back(keyword);
+
+  pthread_t t1, t2, t3, t4;
+
+  std::thread thread1 (thread_function, &v1);
+  
+
+   
 
 
-   long long int total_size = v1.size()+ v2.size()+ v3.size() + v4.size();
 
-   std::cout << "Total size of vectors: " << total_size << std::endl;
+   
 }
 
 

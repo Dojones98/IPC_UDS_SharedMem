@@ -1,4 +1,4 @@
-GPP = g++ -O3 -Wall -std=c++11
+GPP = g++ -O3 -Wall -std=c++17 -pthread -lpthread
 
 A = main2.o
 
