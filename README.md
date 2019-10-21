@@ -15,7 +15,7 @@ Assignment: Project 2
 ## Subproject 1:
 
 1. Launch terminal 
-2. Make the directory "subproject_1" located in the IPC directory the current 
+2. Make the directory: "subproject_1", located in the IPC directory the current 
     working directory 
 3. Type "make"
 4. Run the code by typing "./subproject1"
@@ -32,7 +32,7 @@ Assignment: Project 2
 ## Subproject 2:
 
 1. Launch terminal 
-2. Make the directory "subproject_2" located in the IPC directory the current 
+2. Make the directory: "subproject_2", located in the IPC directory the current 
     working directory 
 3. Type "make"            
 4. This program requires two additional command line arguments, so you will 
