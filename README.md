@@ -1,8 +1,9 @@
 # IPC_UDS_SharedMem
 Exercise using the Unix domain socket and shared memory as forms of Inter-process communication
-
-Code designed and written by Daniel Jones 
-CSCE 311, Project 
+Author: Daniel Jones
+Class: CSCE311
+Date: October 21, 2019
+Assignment: Project 2
 
 # How to compile and run
 
@@ -71,6 +72,26 @@ memory mapping the file, using the first file descriptor created. Mmap is then u
 open shared memory file descriptor. Memcoy is then used to copy data from the local block of mmap memory to the shared block 
 of mmap memory. Parent process then uses one of the pipes to send the size of the file to the child process, so that it knows 
 how big the block of allocated memory needs to be.
+
+Child process reads the size of the file in memory from the pipe, p. It then opens a shared memory file descriptor and 
+mmaps a section of shared memory to the size of the file sent by the parent process. The child process builds a vector 
+of lines of the file by reading from shared memory. Then, that vector is split into 4 parts to be used by the threads
+in the "map" part of map-reduce. 
+
+Four threads are created by the child process and each thread takes the reference to one of the vectors and searches for the 
+keyword in each line of the vector in the function, thread_function. A regex is used for string matching in this function. 
+Lines that match the string are pushed onto a result vector, and at the end of the string matching, the reference to the 
+vector passed to the function is set to the reult vector.
+
+The child process then calls "join" for all of the threads and combines all four subvectors into one main vector,
+for the "reduce" portion of map-reduce. After this, the child initializes a variable called tracker to track how big the 
+block of memory needs to be to store the result vector, while it does this, the result vector is being put back into the 
+shared memory. The child then writes the size of the resultant vector to the parent process so that the parent knows 
+how much shared memory to look at for the result.
+
+Finally, the parent process reads the size of the resultant vector from the second pipe passed to the parent and child.
+It then uses a for loop to rebuild the characters in memory into a vector of strings for each line in the original file.
+The parent sorts the vector of strings and then outputs it to standard output and unlinks the segment of shared memory.
 
 
 
