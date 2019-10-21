@@ -57,11 +57,13 @@ The child uses another function, "after_search", to create a vector only contain
 file containing the keyword. 
 
 After the lines of the file containing the keyword have been selected, the lines are pushed back to 
-the parent process using the UDS, one character at a time. The parent process then rebuilds the strings once again, pushing them onto a vector and sorting them alphabetically before outputting them via standard output.
+the parent process using the UDS, one character at a time. The parent process then rebuilds the strings once again, 
+pushing them onto a vector and sorting them alphabetically before outputting them via standard output.
 
 ## Subproject 2: Shared Memory 
 
-Subproject 2 was designed with the intention of using fork() to create a new process and using Shared Memory as the method of interprocess communication.
+Subproject 2 was designed with the intention of using fork() to create a new process and using Shared Memory as the
+method of interprocess communication.
 
 The execution of this program takes in two additional command-line arguments, streamlining the process of beginning
 program execution. After this, the parent process creates two pipes, forks, and then the parent calls a function,
@@ -90,7 +92,8 @@ vector passed to the function is set to the reult vector.
 The child process then calls "join" for all of the threads and combines all four sub-vectors into one main vector,
 for the "reduce" portion of map-reduce. After this, the child initializes a variable called tracker to track how big the 
 block of memory needs to be to store the result vector, while it does this, the result vector is being put back into the 
-shared memory. The child then writes the size of the resultant vector to the parent process via the second pipe so that the parent knows how much shared memory to access.
+shared memory. The child then writes the size of the resultant vector to the parent process via the second pipe so that 
+the parent knows how much shared memory to access.
 
 Finally, the parent process reads the size of the resultant vector from the second pipe passed to the parent and child.
 It then uses a for loop to rebuild the characters in memory into a vector of strings for each line in the original file.
