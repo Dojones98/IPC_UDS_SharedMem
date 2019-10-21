@@ -1,8 +1,13 @@
 # IPC_UDS_SharedMem
+
 Exercise using the Unix domain socket and shared memory as forms of Inter-process communication
+
 Author: Daniel Jones
+
 Class: CSCE311
+
 Date: October 21, 2019
+
 Assignment: Project 2
 
 # How to compile and run
